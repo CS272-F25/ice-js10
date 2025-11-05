@@ -2,6 +2,7 @@
 const MAD_LIB = getShortMadLib(); // When testing, try replacing with getLongMadLib()
 
 /**
+ * This function is done for you.
  * This function is called when the page is initially loaded.
  * It will generate inputs based on the contents of the MAD_LIB.fillers list.
  * Each input has an associated label and error text that begins as empty.
@@ -9,7 +10,33 @@ const MAD_LIB = getShortMadLib(); // When testing, try replacing with getLongMad
 function setup() {
     let parentNode = document.getElementById("madlib-questions");
 
-    // TODO For each of MAD_LIB's `fillers`, generate an appropriate label and input.
+    for(let i = 0; i < MAD_LIB.fillers.length; i++) {
+        let currLib = MAD_LIB.fillers[i];
+
+        let newDivNode = document.createElement("div");
+        newDivNode.className = "mb-2";
+
+        let newInputNode = document.createElement("input");
+        newInputNode.id = currLib.id + "-input";
+        newInputNode.style.maxWidth = "25em";
+        newInputNode.className = "form-control";
+        newInputNode.placeholder = currLib.exampleText;
+        
+        let newLabelNode = document.createElement("label");
+        newLabelNode.htmlFor = currLib.id + "-input";
+        newLabelNode.innerText = currLib.friendlyText;
+
+        let newErrorTextNode = document.createElement("p");
+        newErrorTextNode.id = currLib.id + "-error-text";
+        newErrorTextNode.style.color = "red";
+        newErrorTextNode.innerText = "";
+
+        newDivNode.appendChild(newLabelNode);
+        newDivNode.append(newInputNode);
+        newDivNode.append(newErrorTextNode);
+
+        parentNode.appendChild(newDivNode);
+    }
 }
 
 /**
@@ -23,7 +50,7 @@ function generate() {
         generateLib();
         alert("Success! Please see below for your MadLib :)");
     } else {
-        alert("Uh oh, please check your form submission.")
+        alert("Uh oh, please check your form submission.");
     }
 }
 
@@ -33,7 +60,13 @@ function generate() {
  * such that any existing HTML is replaced with the newest madlib contents.
  */
 function generateLib() {
-    // TODO Generate the madlib and insert it in `madlib-result`!
+    const resultDiv = document.getElementById("madlib-result");
+    resultDiv.innerHTML = "";
+
+    let pBuilder = document.createElement("p"); 
+    pBuilder.innerText = "I should start building the madlib!";
+
+    resultDiv.appendChild(pBuilder);
 }
 
 /**
@@ -55,6 +88,12 @@ function validate() {
     // TODO: If any inputs are invalid, set their error text.
     //       After checking ALL inputs, return true/false if
     //       the entire form was valid or not.
+    for(let i = 0; i < MAD_LIB.fillers.length; i++) {
+        let currLib = MAD_LIB.fillers[i];
+        let currInputId = currLib.id + "-input";
+        let currErrorTextId = currLib.id + "-error-text";
+        console.log(currLib, currInputId, currErrorTextId);        
+    }
 
     return isValid;
 }
